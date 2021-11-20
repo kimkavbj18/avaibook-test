@@ -15,6 +15,13 @@ class AccomodationsBusiness extends Business {
         'VILLA'
     ];
 
+    /**
+     * @param string $userID
+     * @param string $accID
+     * @param bool $getKey
+     * @param bool $parsedata
+     * @return array
+     */
     public function getAccommodationsByUser( string $userID, string $accID = '', bool $getKey = false, bool $parsedata = true ) : array {
 
         $accommodations = [];
@@ -41,6 +48,12 @@ class AccomodationsBusiness extends Business {
         return $accommodations;
     }
 
+    /**
+     * @param string $userID
+     * @param array $post
+     * @return array
+     * @throws AppException
+     */
     public function newAccommodation( string $userID, array $post ) : array {
         $this->validateAccData( $post );
 
@@ -70,6 +83,13 @@ class AccomodationsBusiness extends Business {
 
     }
 
+    /**
+     * @param string $userID
+     * @param string $accID
+     * @param array $put
+     * @return array
+     * @throws AppException
+     */
     public function updateAccommodation ( string $userID, string $accID, array $put ) : array {
         $this->validateAccData( $put );
 
@@ -108,18 +128,35 @@ class AccomodationsBusiness extends Business {
         return $this->parseData( $record );
     }
 
+    /**
+     * @param string $tradeName
+     * @return bool
+     */
     public function validateTradeName( string $tradeName ) : bool {
         return strlen( $tradeName ) <= $this->tradeNameLength;
     }
 
+    /**
+     * @param string $type
+     * @return bool
+     */
     public function validateTypes( string $type ) : bool {
         return in_array( $type, $this->types );
     }
 
+    /**
+     * @param int $roomNumber
+     * @param int $minRoomNumber
+     * @return bool
+     */
     public function validateNumber( int $roomNumber, int $minRoomNumber ) : bool {
         return $roomNumber >= $minRoomNumber;
     }
 
+    /**
+     * @param array $data
+     * @throws AppException
+     */
     private function validateAccData( array $data ) : void {
 
         if ( empty( $data ) ) {
@@ -163,6 +200,10 @@ class AccomodationsBusiness extends Business {
 
     }
 
+    /**
+     * @param array $data
+     * @return array
+     */
     private function parseData( array $data ) : array {
 
         return [
@@ -175,6 +216,10 @@ class AccomodationsBusiness extends Business {
         ];
     }
 
+    /**
+     * @param array $rooms
+     * @return array
+     */
     private function parseDistribution( array $rooms ) : array {
         return [
             'living_rooms' => $rooms['living_rooms'],
@@ -190,6 +235,10 @@ class AccomodationsBusiness extends Business {
         ];
     }
 
+    /**
+     * @param array $distribution
+     * @return array
+     */
     private function convertDistribution( array $distribution ) : array {
         $bedrooms = [];
         $beds_x_bedrooms = ( int )( $distribution['beds'] / $distribution['bedrooms'] );

@@ -11,6 +11,10 @@ class Database {
         $this->csvfile_path = BASE_PATH . '/../data.csv';
     }
 
+    /**
+     * Carga el fichero CSV en un arreglo de datos
+     * @return array[]
+     */
     public function run() : array {
         $database = array_map( [$this, 'my_str_getcsv'], file( $this->csvfile_path ) );
 
@@ -23,13 +27,21 @@ class Database {
 
     }
 
+    /**
+     * Agrega un registro al final del fichero CSV
+     * @param array $data
+     */
     public function addRecord ( array $data ) {
         $csv = fopen( $this->csvfile_path, 'a' );
         fputcsv( $csv, $data, ';' );
         fclose( $csv );
-
     }
 
+    /**
+     * Reescribe el fichero CSV para actualizar un registro
+     * @param string $headings
+     * @param array $data
+     */
     public function rewriteCSV( string $headings, array $data ) {
         $csv = fopen( $this->csvfile_path, 'w' );
 
@@ -42,6 +54,11 @@ class Database {
         fclose($csv);
     }
 
+    /**
+     * Convierte el string CSV en un arreglo
+     * @param $row
+     * @return array
+     */
     private function my_str_getcsv( $row ) : array {
         return str_getcsv( $row, ';' );
     }

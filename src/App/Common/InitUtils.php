@@ -6,6 +6,13 @@ namespace AvaiBook\App\Common;
 use AvaiBook\App\AppException;
 
 class InitUtils {
+    /**
+     * Carga un fichero .INI con el nombre $filename
+     * y retorna sus valores en un arreglo
+     * @param string $filename
+     * @return array
+     * @throws AppException
+     */
     public function getIniVars( string $filename ) : array {
         $INIFile = BASE_PATH . "/$filename";
 

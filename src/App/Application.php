@@ -7,6 +7,9 @@ use Exception;
 
 class Application {
 
+    /**
+     * Método constructor que instancia la clase Router y valida los endpoints
+     */
     public function __construct() {
         try {
 
@@ -33,6 +36,10 @@ class Application {
         }
     }
 
+    /**
+     * Método que gestiona las respuestas de la API
+     * @param Response $response
+     */
     private function render( Response $response ) {
         header('Content-Type: application/json; charset=UTF-8');
         http_response_code( $response->getCode() );
