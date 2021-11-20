@@ -1,0 +1,19 @@
+{
+    "name": "avaibook_booking/avaibook-php-coding-test",
+    "description": "Coding test for PHP Developer position",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Kimberly Alvarez",
+            "email": "kim.kavbj18@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "AvaiBook\\": "src/"
+        }
+    },
+    "require": {
+      "ext-json": "*"
+    }
+}

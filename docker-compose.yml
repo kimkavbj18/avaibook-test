@@ -1,0 +1,56 @@
+version: '3.4'
+services:
+
+  avcodt_nginx:
+      image: nginx:1.19.0-alpine
+      container_name: avcodt_nginx
+      restart: always
+      volumes:
+        - ./:/usr/src/app
+        - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      ports:
+        - ${DOCKER_NGINX_PORTS}
+      depends_on:
+        - avcodt_php
+
+  avcodt_php:
+      build:
+        context: .
+        dockerfile: docker/php/Dockerfile
+      image: avcodt_php:1.2.0
+      environment:
+        PHP_IDE_CONFIG: serverName=avcodt_php
+      container_name: avcodt_php
+      restart: always
+      user: 1000:1000
+      volumes:
+        - ./:/usr/src/app
+        - ./docker/php/php.ini:/usr/local/etc/php/conf.d/custom.ini
+        - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      ports:
+        -  ${DOCKER_PHP_PORTS}
+      depends_on:
+        - avcodt_db
+      dns:
+        - 8.8.8.8
+
+  avcodt_db:
+      image: mariadb:10.1.26
+      container_name: avcodt_db
+      restart: always
+      volumes:
+        - avcodt_dbdata:/var/lib/mysql
+      ports:
+        - ${DOCKER_DB_PORTS}
+      environment:
+        MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        TZ: Europe/Madrid
+      command: mysqld --innodb-large-prefix --innodb-file-format=barracuda --innodb-file-per-table
+
+volumes:
+  avcodt_dbdata:
+
+networks:
+  default:
+    external:
+      name: avaibook-network
